@@ -3,7 +3,7 @@
 ## Introduction
 
 The CascadeSVC class provides an implementation of the Cascade Support Vector Machine Classifier, as proposed in [Graf, H., Cosatto, E., Bottou, L., Dourdanovic, I., & Vapnik, V. (2004)](https://leon.bottou.org/publications/pdf/nips-2004c.pdf).
-This algorithm divides the training dataset in folds and fits an SVM on each fold. Then, only the support vectors obtained on each fold are kept. This is repeated until the dataset made of remaining support vectors is small enough to fit 
+This algorithm splits the training dataset in folds and fits an SVM on each fold. Then, only the support vectors obtained on each fold are kept. This is repeated until the dataset made of remaining support vectors is small enough to fit 
 a standard SVM on it. This algorithm can thus be more convenient for datasets of very large sample size, for which SVMs are very long to train.
 This implementation is based on the [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) class available in the [Scikit-Learn](https://scikit-learn.org/stable/index.html) package, and can be used with the 
 functionalities of the Scikit-Learn package.
