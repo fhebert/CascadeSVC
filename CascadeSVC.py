@@ -42,7 +42,7 @@ class CascadeSVC():
         self.classes_, y = np.unique(y, return_inverse=True)
         if X.shape[0]<2*self.fold_size:
             print("The number of instances is lower than 2*fold_size")
-            print("An only SVC estimation is performed")
+            print("A simple SVC estimation is performed")
             print("The following estimator is used: "+str(self.base_svc))
             id, X, y = self.__get_sv__(np.arange(X.shape[0]), X, y)
             self.n_steps = 1
