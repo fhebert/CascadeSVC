@@ -13,8 +13,8 @@ functionalities of the Scikit-Learn package.
 To import the CascadeSVC class, enter the following commands:
 
 ```
-import urllib.request
-exec(urllib.request.urlopen("https://raw.githubusercontent.com/fhebert/CascadeSVC/main/CascadeSVC.py").read())
+from urllib.request import urlopen
+exec(urlopen("https://raw.githubusercontent.com/fhebert/CascadeSVC/main/CascadeSVC.py").read())
 ```
 
 ## Usage and examples
@@ -66,6 +66,7 @@ The CascadeSVC class will be fitted on this dataset as well as the SVC class.
 For each of them, a scaling preprocessing step will be performed using a pipeline.
 The computational time of each can be compared.
 ```
+import time
 from sklearn.pipeline import Pipeline
 csvm = Pipeline([("scaler", StandardScaler()), 
                  ("csvm", CascadeSVC(fold_size=10000,C=0.1,gamma=0.1,kernel="rbf"))])
