@@ -64,19 +64,20 @@ class CascadeSVC(ClassifierMixin, BaseEstimator):
             self.final_svc_ = self._fit_base_svc(X, y)
             self.nlayers_ = 1
         else:
-            n_init = X.shape[0]
+            n_prev = X.shape[0]
             k = 1
             id = np.arange(X.shape[0])
             if self.verbose:
                 print(f"""Cascade layer {k}""")
-                print(f"""Total number of instances: {n_init}""")
+                print(f"""Total number of instances: {n_prev}""")
             id, X, y = self._kfold_svc(id, X, y)
             n_new = X.shape[0]
-            while n_new > 2*self.fold_size and ((n_init - n_new) / n_init > 0.1):
+            while n_new > 2*self.fold_size and n_new / n_prev < 0.9:
+                n_prev = X.shape[0]
                 k += 1
                 if self.verbose:
                     print(f"""Cascade layer {k}""")
-                    print(f"""Total number of instances: {n_init}""")
+                    print(f"""Total number of instances: {n_new}""")
                 id, X, y = self._kfold_svc(id, X, y)
                 n_new = X.shape[0]
             k += 1
