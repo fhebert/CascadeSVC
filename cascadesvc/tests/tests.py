@@ -1,12 +1,14 @@
 import unittest
 import numpy as np
 import pickle
+import os
 from unittest import TestCase
-from cascadesvc.cascadesvc import CascadeSVC
-from sklearn.datasets import make_moons
+from glob import glob
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
+from cascadesvc.cascadesvc import CascadeSVC
+
 
 class CascadeSVCTest(TestCase):
 
@@ -20,17 +22,17 @@ class CascadeSVCTest(TestCase):
         data = np.load("cascadesvc/tests/data/testdata.npy")
         Xtest, ytest = data[:,:-1], data[:,-1].flatten()
         return Xtrain, ytrain, Xtest, ytest
-    
+
     @staticmethod
     def _import_id_support_vectors() -> dict:
         """Imports previously determined support vectors corresponding to the 10,000 first instances in
         the training dataset, stored as a dictionary whose keys are named C_x_gamma_y where x and y
         are the values of C and gamma hyperparameters, and each value is a 1d array giving indices of
         corresponding support vectors"""
-        with open("cascadesvc/tests/data/support_vectors1.pkl", 'rb') as f:
-            res = pickle.load(f)
+        files = glob(os.path.join("cascadesvc","tests","data","sv","*.npy"))
+        res = {os.path.splitext(file)[0]: np.load(file) for file in files}
         return res
- 
+
     def setUp(self):
         super().setUp()
         self.Xtrain, self.ytrain, self.Xtest, self.ytest = self._import_data()
@@ -81,6 +83,3 @@ class CascadeSVCTest(TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-    
-
-    
