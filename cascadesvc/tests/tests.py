@@ -15,7 +15,7 @@ class CascadeSVCTest(TestCase):
     """Implements some tests to check the behavior and results return by the CascadeSVC class"""
 
     @staticmethod
-    def _import_data() -> tuple[np.array, np.array, np.array, np.array]:
+    def _import_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Imports generated data used to perform tests"""
         data = np.load("cascadesvc/tests/data/data.npy")
         Xtrain, ytrain = data[:,:-1], data[:,-1].flatten()
