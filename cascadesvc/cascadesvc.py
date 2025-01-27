@@ -28,7 +28,7 @@ class CascadeSVC(ClassifierMixin, BaseEstimator):
         self.probability = probability
         self.random_state = random_state
 
-    def _fit_base_svc(self, X: np.array, y: np.array) -> SVC:
+    def _fit_base_svc(self, X: np.ndarray, y: np.ndarray) -> SVC:
         """Fits a base SVC classifier with given data"""
         params = self.get_params()
         del params["fold_size"]
@@ -37,14 +37,16 @@ class CascadeSVC(ClassifierMixin, BaseEstimator):
         base_svc.fit(X, y)
         return base_svc
 
-    def _get_support_vectors(self, id: np.array, X: np.array, y: np.array) -> tuple[np.array, np.array, np.array]:
+    def _get_support_vectors(self, id: np.ndarray, X: np.ndarray, y: np.ndarray)\
+        -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Fits a SVC estimator on (X,y) to retrieve the support vectors"""
         base_svc = self._fit_base_svc(X, y)
         ind_sv = base_svc.support_
         id, X, y = id[ind_sv], X[ind_sv, :], y[ind_sv]
         return id, X, y
 
-    def _kfold_svc(self, id: np.array, X: np.array, y: np.array) -> tuple[np.array, np.array, np.array]:
+    def _kfold_svc(self, id: np.ndarray, X: np.ndarray, y: np.ndarray)\
+        -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Splits data in a number of folds such as each fold contains approximately self.fold_size instances,
         fits a SVC estimator on each fold and retrieves corresponding support vectors; returns arrays containing
         all support vectors"""
@@ -56,7 +58,7 @@ class CascadeSVC(ClassifierMixin, BaseEstimator):
         idsv, Xsv, ysv = np.hstack(ysv), np.vstack(Xsv), np.hstack(ysv)
         return idsv, Xsv, ysv
 
-    def fit(self, X: np.array, y: np.array) -> Self:
+    def fit(self, X: np.ndarray, y: np.ndarray) -> Self:
         X, y = check_X_y(X, y)
         self.classes_, y = np.unique(y, return_inverse=True)
         if X.shape[0] < 2*self.fold_size:
@@ -89,11 +91,11 @@ class CascadeSVC(ClassifierMixin, BaseEstimator):
             print("Done")
         return self
 
-    def decision_function(self, X: np.array) -> np.array:
+    def decision_function(self, X: np.ndarray) -> np.ndarray:
         return self.final_svc_.decision_function(X)
 
-    def predict(self, X: np.array) -> np.array:
+    def predict(self, X: np.ndarray) -> np.ndarray:
         return self.classes_[self.final_svc_.predict(X)]
 
-    def predict_proba(self, X: np.array) -> np.array:
+    def predict_proba(self, X: np.ndarray) -> np.ndarray:
         return self.final_svc_.predict_proba(X)
