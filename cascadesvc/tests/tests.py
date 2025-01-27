@@ -7,7 +7,7 @@ from glob import glob
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
-from cascadesvc.cascadesvc import CascadeSVC
+from cascadesvc import CascadeSVC
 
 
 class CascadeSVCTest(TestCase):
